@@ -3,6 +3,7 @@ package com.example.activity5_tip_calculator_app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -11,8 +12,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.activity5_tip_calculator_app.ui.theme.Activity5_tip_calculator_appTheme
@@ -20,6 +21,7 @@ import java.text.NumberFormat
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge() // Enable edge-to-edge
         super.onCreate(savedInstanceState)
         setContent {
             Activity5_tip_calculator_appTheme {
@@ -57,7 +59,7 @@ fun TipTimeLayout() {
         )
         EditNumberField(
             value = amountInput,
-            onValueChange = { amountInput = it },
+            onValueChanged = { amountInput = it }, // Updated parameter name
             modifier = Modifier
                 .padding(bottom = 32.dp)
                 .fillMaxWidth()
@@ -73,19 +75,18 @@ fun TipTimeLayout() {
 @Composable
 fun EditNumberField(
     value: String,
-    onValueChange: (String) -> Unit,
+    onValueChanged: (String) -> Unit, // Updated parameter name
     modifier: Modifier = Modifier
 ) {
     TextField(
         value = value,
-        onValueChange = onValueChange,
+        onValueChange = onValueChanged, // Updated parameter name
         singleLine = true,
         label = { Text(stringResource(R.string.bill_amount)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         modifier = modifier
     )
 }
-
 private fun calculateTip(amount: Double, tipPercent: Double = 15.0): String {
     val tip = tipPercent / 100 * amount
     return NumberFormat.getCurrencyInstance().format(tip)
